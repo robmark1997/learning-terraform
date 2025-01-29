@@ -30,6 +30,24 @@ resource "aws_instance" "web" {
   }
 }
 
+module "blog-sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.3.0"
+
+  name        = "blog-sg"
+  description = "Security group for web-server with HTTP ports open within VPC"
+
+  vpc_id = data.aws_vpc.default.id
+
+  ingress_rules           = ["http-80-tcp", "https-443-tcp"]
+  ingress_cidr_blocks     = ["0.0.0.0/0"]
+  egress_rules            = ["all-all"]
+  egress_cidr_blocks      = ["0.0.0.0/0"]
+}
+
+
+
+
 resource "aws_security_group" "blog" {
   name        = "blog"
   description = "Allow TLS inbound traffic and all outbound traffic for blog instance"
