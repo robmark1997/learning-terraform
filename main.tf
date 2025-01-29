@@ -33,7 +33,7 @@ resource "aws_instance" "web" {
 resource "aws_security_group" "blog" {
   name        = "blog"
   description = "Allow TLS inbound traffic and all outbound traffic for blog instance"
-  vpc_id      = aws_vpc.default.id
+  vpc_id      = data.aws_vpc.default.id
 
 }
 
