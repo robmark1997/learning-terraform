@@ -59,3 +59,40 @@ module "blog-sg" {
   egress_rules            = ["all-all"]
   egress_cidr_blocks      = ["0.0.0.0/0"]
 }
+
+module "blog-alb" {
+  source = "terraform-aws-modules/alb/aws"
+
+  name              = "blog-alb"
+  vpc_id            = module.blog_vpc.vpc_id
+  subnets           = module.blog_vpc.subnet_id
+  security_groups   = module.blog-sg.security_group_id
+ 
+
+  listeners = {
+    ex-http-https-redirect = {
+      port     = 80
+      protocol = "HTTP"
+      redirect = {
+        port        = "443"
+        protocol    = "HTTPS"
+        status_code = "HTTP_301"
+      }
+    }
+  }
+
+  target_groups = {
+    ex-instance = {
+      name_prefix      = "h1"
+      protocol         = "HTTP"
+      port             = 80
+      target_type      = "instance"
+      target_id        = aws_instance.web.instance_id
+    }
+  }
+
+  tags = {
+    Environment = "Development"
+    Project     = "Example"
+  }
+}
