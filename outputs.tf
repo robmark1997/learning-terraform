@@ -7,5 +7,5 @@ output "instance_arn" {
 }
 
 output "vpc_name"{
-  value = data.aws_vpc.default.id
+  value = module.blog_vpc.vpc_name
 }
