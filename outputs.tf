@@ -6,6 +6,6 @@ output "instance_arn" {
   value = aws_instance.web.arn
 }
 
-output "vpc_name"{
-  value = module.blog_vpc.vpc_name
+output "vpc_id"{
+  value = module.blog_vpc.vpc_id
 }
