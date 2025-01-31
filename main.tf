@@ -65,8 +65,8 @@ module "blog-alb" {
 
   name              = "blog-alb"
   vpc_id            = module.blog_vpc.vpc_id
-  subnets           = module.blog_vpc.subnet_id
-  security_groups   = module.blog-sg.security_group_id
+  subnets           = module.blog_vpc.public_subnets
+  security_groups   = [module.blog-sg.security_group_id]
  
 
   listeners = {
@@ -87,7 +87,7 @@ module "blog-alb" {
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
-      target_id        = aws_instance.web.instance_id
+      target_id        = aws_instance.web.id
     }
   }
 
