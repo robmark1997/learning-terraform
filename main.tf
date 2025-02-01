@@ -46,17 +46,17 @@ module "autoscaling" {
   image_id          = data.aws_ami.app_ami.id
   instance_type     = "t3.micro"
 
-  security_groups           = [module.blog-sg.security_group_id]
+  security_groups           = [module.blog_sg.security_group_id]
   vpc_zone_identifier       =  module.blog_vpc.public_subnets
-  target_group_arns         =  module.blog-alb.target_group_arns
+  target_group_arns         =  module.blog_alb.target_group_arns
 
 }
 
-module "blog-sg" {
+module "blog_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "blog-sg"
+  name        = "blog_sg"
   description = "Security group for web-server with HTTP ports open within VPC"
 
   vpc_id = module.blog_vpc.vpc_id
@@ -67,13 +67,13 @@ module "blog-sg" {
   egress_cidr_blocks      = ["0.0.0.0/0"]
 }
 
-module "blog-alb" {
+module "blog_alb" {
   source = "terraform-aws-modules/alb/aws"
 
-  name              = "blog-alb"
+  name              = "blog_alb"
   vpc_id            = module.blog_vpc.vpc_id
   subnets           = module.blog_vpc.public_subnets
-  security_groups   = [module.blog-sg.security_group_id]
+  security_groups   = [module.blog_sg.security_group_id]
  
 
   listeners = {
