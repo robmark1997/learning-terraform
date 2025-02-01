@@ -62,7 +62,7 @@ module "autoscaling" {
 
   security_groups           = [module.blog-sg.security_group_id]
   vpc_zone_identifier       =  module.blog_vpc.public_subnets
-  target_group_arns         =  module.blog-sg.target_groups_arns
+  target_group_arns         =  module.blog_alb.target_groups_arns
 
 }
 
