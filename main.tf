@@ -60,9 +60,9 @@ module "autoscaling" {
   image_id          = data.aws_ami.app_ami.id
   instance_type     = "t3.micro"
 
-  vpc_security_group_ids = [module.blog-sg.security_group_id]
+  security_groups = [module.blog-sg.security_group_id]
   vpc_zone_identifier    =  module.blog_vpc.public_subnets
-  autoscaling_group_target_group_arns = [module.blog-alb.autoscaling_group_target_group_arns]
+  target_groups          =  module.blog-sg.target_groups
 
 }
 
