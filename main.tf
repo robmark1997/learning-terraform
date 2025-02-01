@@ -61,7 +61,7 @@ module "autoscaling" {
   instance_type     = "t3.micro"
 
   security_groups           = [module.blog-sg.security_group_id]
-  vpc_zone_identifier.      =  module.blog_vpc.public_subnets
+  vpc_zone_identifier       =  module.blog_vpc.public_subnets
   target_group_arns         =  module.blog-sg.target_groups_arns
 
 }
