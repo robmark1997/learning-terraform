@@ -32,6 +32,7 @@ data "aws_ami" "app_ami" {
   owners = ["979382823631"] # Bitnami
 }
 
+/* 
 resource "aws_instance" "web" {
   ami           = data.aws_ami.app_ami.id
   instance_type = var.instance_type
@@ -43,6 +44,26 @@ resource "aws_instance" "web" {
   tags = {
     Name = "HelloWorld"
   }
+} 
+*/
+
+
+module "autoscaling" {
+  source  = "terraform-aws-modules/autoscaling/aws"
+  version = "8.0.1"
+
+  name = "web"
+
+  max_size = 2
+  min_size = 1
+  
+  image_id          = data.aws_ami.app_ami.id
+  instance_type     = "t3.micro"
+
+  vpc_security_group_ids = [module.blog-sg.security_group_id]
+  vpc_zone_identifier    =  module.blog_vpc.public_subnets
+  autoscaling_group_target_group_arns = [module.blog-alb.autoscaling_group_target_group_arns]
+
 }
 
 module "blog-sg" {
@@ -87,7 +108,6 @@ module "blog-alb" {
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
-      target_id        = aws_instance.web.id
     }
   }
 
