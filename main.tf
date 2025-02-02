@@ -51,7 +51,7 @@ module "autoscaling" {
   traffic_source_attachments = {
   alb_target_group = {
     type = "elbv2"
-    traffic_source_identifier = module.blog_alb.target_groups.ex-instance.arn
+    traffic_source_identifier = module.blog-alb.target_groups.ex-instance.arn
   }
 }
 
@@ -72,10 +72,10 @@ module "blog_sg" {
   egress_cidr_blocks      = ["0.0.0.0/0"]
 }
 
-module "blog_alb" {
+module "blog-alb" {
   source = "terraform-aws-modules/alb/aws"
 
-  name              = "blog_alb"
+  name              = "blog-alb"
   vpc_id            = module.blog_vpc.vpc_id
   subnets           = module.blog_vpc.public_subnets
   security_groups   = [module.blog_sg.security_group_id]
