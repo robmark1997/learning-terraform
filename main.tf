@@ -51,7 +51,7 @@ module "autoscaling" {
   traffic_source_attachments = {
   alb_target_group = {
     type = "elbv2"
-    traffic_source_identifier = module.blog-alb.target_groups["ex-instance"].arn
+    traffic_source_identifier = module.blog-alb.target_groups.arn
   }
 }
 
@@ -94,12 +94,12 @@ module "blog-alb" {
   }
 
   target_groups = {
-    ex-instance = {
+ 
       name_prefix      = "h1"
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
-    }
+    
   }
 
   tags = {
